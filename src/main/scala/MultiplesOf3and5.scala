@@ -11,9 +11,25 @@ object MultiplesOf3and5 {
 
   def main (args: Array[String]) {
     Bench test firstApproach
+    Bench test secondApproach
+    Bench test thirdApproach
   }
 
   def firstApproach() = (sumOfMultiples(3) + sumOfMultiples(5) - sumOfMultiples(15)).toString
+  def secondApproach() = addThenMultiply(sumAll).toString
+  def thirdApproach() = addThenMultiply(fib).toString
+
+  def addThenMultiply(getAddition: (Int, Int)=> Int): Int = {
+    var base = getAddition(0, 999 / 15)
+    var sum = -base * 15
+
+    base += getAddition((999 / 15) + 1, 999 / 5)
+    sum += base * 5
+
+    base += getAddition((999 / 5) + 1, 999 / 3)
+    sum += base * 3
+    sum
+  }
 
   def sumOfMultiples(toBeAdded: Int) = {
     var i = toBeAdded
@@ -24,4 +40,19 @@ object MultiplesOf3and5 {
     }
     sum
   }
+  def sumAll(from: Int, goal: Int) = {
+    var sum = 0
+    for (i <- from to goal)
+      sum += i
+    sum
+  }
+  def fib(from: Int, to: Int) : Int = {
+    def fib_tail(total: Int, limit: Int): Int = {
+      if (limit < from)
+        return total
+      fib_tail(total + limit, limit - 1)
+    }
+    fib_tail(0, to)
+  }
+
 }
